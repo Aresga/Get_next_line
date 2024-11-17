@@ -15,23 +15,19 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include <stdio.h>
+
 
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 5
+# define BUFFER_SIZE 10
 #endif
 
-typedef struct	s_list
-{
-	char			*content;
-	struct s_list	*next;
-}				t_list;
 
 char	*get_next_line(int fd);
-t_list	ft_lstadd(t_list *buff_list, char *buffer);
-char	*ft_strchr(const char *str, int c);
-char	*extract_line(t_list **buff_list);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strchr(const char *s, int c);
+char	*ft_substr(char *s, unsigned int start, size_t len);
+size_t	ft_strlen(const char *s);
+char	*ft_strdup(const char *s);
 
 #endif

@@ -12,49 +12,96 @@
 
 #include "get_next_line.h"
 
-static t_list	*ft_lstlast(t_list *lst)
+size_t	ft_strlen(const char *s)
 {
-	while (lst)
-	{
-		if (lst->next == NULL)
-			return (lst);
-		lst = lst->next;
-	}
-	return (lst);
+	size_t i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
 
-t_list	ft_lstadd(t_list *buff_list, char *buffer)
+char	*ft_strchr(const char *s, int c)
 {
-	t_list	*tmp;
-
-	if (buffer == NULL || buff_list == NULL)
+	if (!s)
 		return (NULL);
-	if (!buff_list)
-		buff_list = buffer;
-	else
+	while (*s)
 	{
-		tmp = ft_lstlast(buff_list);
-		tmp->next = buffer;
-	}
-}
-
-
-char	*ft_strchr(const char *str, int c)
-{
-	if (str == NULL)
-		return (NULL);
-	while (*str)
-	{
-		if (str == (char)c)
-			return ((char *)str);
-		str++;
+		if (*s == (char)c)
+			return (char *)s;
+		s++;
 	}
 	if ((char)c == '\0')
-		return ((char *)str);
+		return (char *)s;
 	return (NULL);
 }
 
-char	*extract_line(t_list **buff_list)
+char	*ft_strdup(const char *s)
 {
-	
+	char	*dup;
+	size_t	len;
+	size_t	i;
+
+	len = ft_strlen(s);
+	dup = (char *)malloc(len + 1);
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
 }
+
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*joined;
+	size_t	len1, len2, i, j;
+
+	if (!s1)
+		return (ft_strdup(s1));
+	if (!s2)
+		return (ft_strdup(s2));
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	joined = (char *)malloc(len1 + len2 + 1);
+	if (!joined)
+		return NULL;
+	i = 0;
+	while (i < len1)
+	{
+		joined[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (j < len2)
+		joined[i++] = s2[j++];
+	joined[i] = '\0';
+	return joined;
+}
+
+char	*ft_substr(char *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	i;
+
+	if (!s || start >= ft_strlen(s))
+		return ft_strdup("");
+	sub = (char *)malloc(len + 1);
+	if (!sub)
+		return NULL;
+	i = 0;
+	while (i < len && s[start + i])
+	{
+		sub[i] = s[start + i];
+		i++;
+	}
+	sub[i] = '\0';
+	return sub;
+}
+
