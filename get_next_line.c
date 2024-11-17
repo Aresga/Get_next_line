@@ -10,12 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line.h" 
 
-// fanction_name reads the file and stores it in a buffer
-// suugest an alternative name for this function like read_file
-
-static char	*read_file(int fd, char *buf, char *backup)
+static char	*read_file(int fd, char *buf, char *leftover)
 {
 	int		read_line;
 	char	*char_temp;
@@ -29,16 +26,16 @@ static char	*read_file(int fd, char *buf, char *backup)
 		else if (read_line == 0)
 			break ;
 		buf[read_line] = '\0';
-		if (!backup)
-			backup = ft_strdup("");
-		char_temp = backup;
-		backup = ft_strjoin(char_temp, buf);
+		if (!leftover)
+			leftover = ft_strdup("");
+		char_temp = leftover;
+		leftover = ft_strjoin(char_temp, buf);
 		free(char_temp);
 		char_temp = NULL;
 		if (ft_strchr (buf, '\n'))
 			break ;
 	}
-	return (backup);
+	return (leftover);
 }
 
 static char	*extract(char *line)
