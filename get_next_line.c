@@ -15,7 +15,7 @@
 static char	*read_file(int fd, char *buf, char *leftover)
 {
 	int		read_line;
-	char	*char_temp;
+	char	*tmp_buffer;
 
 	read_line = 1;
 	while (read_line != '\0')
@@ -28,10 +28,10 @@ static char	*read_file(int fd, char *buf, char *leftover)
 		buf[read_line] = '\0';
 		if (!leftover)
 			leftover = ft_strdup("");
-		char_temp = leftover;
-		leftover = ft_strjoin(char_temp, buf);
-		free(char_temp);
-		char_temp = NULL;
+		tmp_buffer = leftover;
+		leftover = ft_strjoin(tmp_buffer, buf);
+		free(tmp_buffer);
+		tmp_buffer = NULL;
 		if (ft_strchr (buf, '\n'))
 			break ;
 	}
