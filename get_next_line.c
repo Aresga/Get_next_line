@@ -12,6 +12,37 @@
 
 #include "get_next_line.h" 
 
+static char *read_from_fd(int fd, char *buf)
+{
+    int read_line = read(fd, buf, BUFFER_SIZE);
+    if (read_line == -1)
+        return NULL;
+    buf[read_line] = '\0';
+    return buf;
+}
+
+static char *join_buffers(char *s1, char *s2)
+{
+    char *joined = ft_strjoin(s1, s2);
+    free(s1);
+    return joined;
+}
+
+static char *read_file(int fd, char *buf, char *remainder)
+{
+    char *temp_buf;
+
+    while ((temp_buf = read_from_fd(fd, buf)))
+    {
+        if (!remainder)
+            remainder = ft_strdup("");
+        remainder = join_buffers(remainder, temp_buf);
+        if (ft_strchr(buf, '\n'))
+            break;
+    }
+    return remainder;
+}
+/*
 static char	*read_file(int fd, char *buf, char *leftover)
 {
 	int		read_line;
@@ -37,7 +68,7 @@ static char	*read_file(int fd, char *buf, char *leftover)
 	}
 	return (leftover);
 }
-
+*/
 static char	*extract(char *line)
 {
 	size_t	count;
