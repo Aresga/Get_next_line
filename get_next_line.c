@@ -6,7 +6,7 @@
 /*   By: agaga <agaga@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 13:43:59 by agaga             #+#    #+#             */
-/*   Updated: 2024/11/16 15:25:27 by agaga            ###   ########.fr       */
+/*   Updated: 2024/11/18 13:57:35 by agaga            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,21 @@ static char	*read_file(int fd, char *buf, char *leftover)
 static char	*extract(char *line)
 {
 	size_t	count;
-	char	*backup;
+	char	*leftover;
 
 	count = 0;
 	while (line[count] != '\n' && line[count] != '\0')
 		count++;
 	if (line[count] == '\0' || line[1] == '\0')
 		return (0);
-	backup = ft_substr(line, count + 1, ft_strlen(line) - count);
-	if (*backup == '\0')
+	leftover = ft_substr(line, count + 1, ft_strlen(line) - count);
+	if (*leftover == '\0')
 	{
-		free(backup);
-		backup = NULL;
+		free(leftover);
+		leftover = NULL;
 	}
 	line[count + 1] = '\0';
-	return (backup);
+	return (leftover);
 }
 
 char	*get_next_line(int fd)
