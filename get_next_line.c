@@ -6,36 +6,35 @@
 /*   By: agaga <agaga@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 13:43:59 by agaga             #+#    #+#             */
-/*   Updated: 2024/11/18 13:57:35 by agaga            ###   ########.fr       */
+/*   Updated: 2024/11/18 15:11:28 by agaga            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h" 
 
-static char	*read_file(int fd, char *buf, char *leftover)
+static char	*read_file(int fd, char *buf, char **leftover)
 {
 	int		read_line;
 	char	*tmp_buffer;
 
 	read_line = 1;
-	while (read_line != '\0')
+	while (read_line > 0)
 	{
 		read_line = read(fd, buf, BUFFER_SIZE);
 		if (read_line == -1)
-			return (0);
+			return (NULL);
 		else if (read_line == 0)
 			break ;
 		buf[read_line] = '\0';
-		if (!leftover)
-			leftover = ft_strdup("");
-		tmp_buffer = leftover;
-		leftover = ft_strjoin(tmp_buffer, buf);
+		if (!(*leftover))
+			*leftover = ft_strdup("");
+		tmp_buffer = *leftover;
+		*leftover = ft_strjoin(tmp_buffer, buf);
 		free(tmp_buffer);
-		tmp_buffer = NULL;
 		if (ft_strchr (buf, '\n'))
 			break ;
 	}
-	return (leftover);
+	return (*leftover);
 }
 
 static char	*extract(char *line)
@@ -46,8 +45,8 @@ static char	*extract(char *line)
 	count = 0;
 	while (line[count] != '\n' && line[count] != '\0')
 		count++;
-	if (line[count] == '\0' || line[1] == '\0')
-		return (0);
+	if (line[count] == '\0')
+		return (NULL);
 	leftover = ft_substr(line, count + 1, ft_strlen(line) - count);
 	if (*leftover == '\0')
 	{
@@ -61,19 +60,19 @@ static char	*extract(char *line)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	char		*buf;
-	static char	*backup;
+	char		*buffer;
+	static char	*leftover;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buf)
-		return (0);
-	line = read_file(fd, buf, backup);
-	free(buf);
-	buf = NULL;
+		return (NULL);
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (NULL);
+	line = read_file(fd, buffer, &leftover);
+	free(buffer);
+	buffer = NULL;
 	if (!line)
 		return (NULL);
-	backup = extract(line);
+	leftover = extract(line);
 	return (line);
 }

@@ -13,6 +13,10 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# Test folders
+gnlTester/
+42test-gnl-station-2022/
+
 # Mono auto generated files
 mono_crash.*
 
