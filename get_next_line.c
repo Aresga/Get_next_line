@@ -6,16 +6,16 @@
 /*   By: agaga <agaga@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 13:43:59 by agaga             #+#    #+#             */
-/*   Updated: 2024/11/18 15:11:28 by agaga            ###   ########.fr       */
+/*   Updated: 2024/11/28 16:31:30 by agaga            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h" 
 
-static char	*read_file(int fd, char *buf, char **leftover)
+static char	*bytes_read(int fd, char *buf, char **leftover)
 {
 	int		read_line;
-	char	*tmp_buffer;
+	char	*prev_leftover;
 
 	read_line = 1;
 	while (read_line > 0)
@@ -28,9 +28,9 @@ static char	*read_file(int fd, char *buf, char **leftover)
 		buf[read_line] = '\0';
 		if (!(*leftover))
 			*leftover = ft_strdup("");
-		tmp_buffer = *leftover;
-		*leftover = ft_strjoin(tmp_buffer, buf);
-		free(tmp_buffer);
+		prev_leftover = *leftover;
+		*leftover = ft_strjoin(prev_leftover, buf);
+		free(prev_leftover);
 		if (ft_strchr (buf, '\n'))
 			break ;
 	}
@@ -40,26 +40,26 @@ static char	*read_file(int fd, char *buf, char **leftover)
 static char	*extract(char *line)
 {
 	size_t	count;
-	char	*leftover;
+	char	*newleftover;
 
 	count = 0;
 	while (line[count] != '\n' && line[count] != '\0')
 		count++;
 	if (line[count] == '\0')
 		return (NULL);
-	leftover = ft_substr(line, count + 1, ft_strlen(line) - count);
-	if (*leftover == '\0')
+	newleftover = ft_substr(line, count + 1, ft_strlen(line) - count);
+	if (*newleftover == '\0' || !newleftover[0])
 	{
-		free(leftover);
-		leftover = NULL;
+		free(newleftover);
+		newleftover = NULL;
 	}
 	line[count + 1] = '\0';
-	return (leftover);
+	return (newleftover);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*line;
+	char		*combined_data;
 	char		*buffer;
 	static char	*leftover;
 
@@ -68,11 +68,11 @@ char	*get_next_line(int fd)
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
-	line = read_file(fd, buffer, &leftover);
+	combined_data = bytes_read(fd, buffer, &leftover);
 	free(buffer);
 	buffer = NULL;
-	if (!line)
+	if (!combined_data)
 		return (NULL);
-	leftover = extract(line);
-	return (line);
+	leftover = extract(combined_data);
+	return (combined_data);
 }

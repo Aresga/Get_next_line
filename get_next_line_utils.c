@@ -6,7 +6,7 @@
 /*   By: agaga <agaga@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 13:44:06 by agaga             #+#    #+#             */
-/*   Updated: 2024/11/16 15:36:50 by agaga            ###   ########.fr       */
+/*   Updated: 2024/11/28 19:25:34 by agaga            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i])
 		i++;
@@ -43,6 +45,8 @@ char	*ft_strdup(const char *s)
 	size_t	len;
 	size_t	i;
 
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s);
 	dup = (char *)malloc(len + 1);
 	if (!dup)
@@ -65,6 +69,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
+	if (!s1 || !s2)
+		return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	joined = (char *)malloc(len1 + len2 + 1);
@@ -88,6 +94,8 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	char	*sub;
 	size_t	i;
 
+	if (!s)
+		return (NULL);
 	if (!s || start >= ft_strlen(s))
 		return (ft_strdup(""));
 	sub = (char *)malloc(len + 1);
