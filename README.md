@@ -104,6 +104,6 @@ To use `get_next_line` in your own project:
 
 ## License
 
-This project is unlicensed and intended for educational purposes as part of the 42 school curriculum.
+This project is unlicensed and intended for educational purposes as part of Hive Helsinki curriculum.
 
 ---
